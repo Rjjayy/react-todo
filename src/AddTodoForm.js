@@ -4,11 +4,15 @@ import React, { useState } from 'react';
 export default function AddTodoForm({onAddTodo}) {
   const [todoTitle, setTodoTitle] = useState('');
 
-  function handleTitleChange(event) { {/*changes to the input value will be handled this fuction. which will update the state of todoTitle using setTodoTitle()*/}
-  const newTodoTitle = event.target.value
+  /* This is a multi-line comment in JSX */
+  function handleTitleChange(event) {  /*
+  changes to the input value will be handled this function,
+  which will update the state of todoTitle using setTodoTitle()
+*/
+  const newTodoTitle = event.target.value;
   setTodoTitle(newTodoTitle);
   }
-
+  
   function handleAddTodo (event) {
     event.preventDefault();
     const newTodo ={
