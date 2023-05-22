@@ -9,7 +9,7 @@ import AddTodoForm from './AddTodoForm';
 import TodoList from './TodoList';
 
 
-function useSemiPersistentState() {
+/*function useSemiPersistentState() {
   const [todoList, setTodoList] = useState(JSON.parse(localStorage.getItem('savedTodoList')) || []);
 
 
@@ -22,16 +22,38 @@ function useSemiPersistentState() {
 
 function App() {
   const [todoList, setTodoList] = useSemiPersistentState();
+  The code belloew: has been updated by removing the useSemiPersistentState function and integrating its logic directly into the App component
+*/
+function App() {
+  const [todoList, setTodoList] = useState([]);
 
-  
+ const [isLoading, setIsLoading ] = useState(true);
+
+  useEffect(() => {
+    const promise = new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve({ data: { todoList:JSON.parse(localStorage.getItem('savedTodoList')) || []} }); 
+      }, 2000);
+    });
+
+    promise.then(result => {
+     
+    setTodoList(result.data.todoList);
+    setIsLoading(false);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (isLoading === false) {localStorage.setItem('savedTodoList', JSON.stringify(todoList));}
+  }, [todoList]);
+
  function addTodo (newTodo) {
     setTodoList(prevTodoList => [...prevTodoList, newTodo]);
  }
 
  function removeTodo(id) {
   setTodoList(prevTodoList =>
-    prevTodoList.filter(todo => todo.id !== id)
-  );
+    prevTodoList.filter(todo => todo.id !== id));
 }
 
   return (
@@ -39,7 +61,10 @@ function App() {
     <>
       <h1>Todo List</h1>
       <AddTodoForm onAddTodo={addTodo} />
-      <TodoList todoList={todoList} onRemoveTodo={removeTodo} />
+      {
+        isLoading ===true? <p>Loading...</p> : <TodoList todoList={todoList} onRemoveTodo={removeTodo} />
+      }
+     
     </>
 
   );
