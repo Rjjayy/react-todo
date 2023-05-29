@@ -24,13 +24,52 @@ function App() {
   const [todoList, setTodoList] = useSemiPersistentState();
   The code belloew: has been updated by removing the useSemiPersistentState function and integrating its logic directly into the App component
 */
+
+async function fetchData() {
+  const url = `https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/${process.env.REACT_APP_TABLE_NAME}`;
+  const options = {
+    method: 'GET'
+    headers: {
+      Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_API_KEY}`
+    }
+  };
+  }
+
+
+  try {
+     const response = await fetch (url, options);
+
+  if (response.ok === false){
+    throw new Error('Error: ${response.status}');
+  }
+
+  const data = await response.json();
+  const todos = data.records.map(record => ({
+        title: record.fields.title,
+        id: record.id
+}));
+
+   setTodoList(todos);
+   setIsLoading(false);
+
+} catch (error){
+console.error ('Error while fetching data:', error)
+}
+
+
 function App() {
   const [todoList, setTodoList] = useState([]);
 
  const [isLoading, setIsLoading ] = useState(true);
 
+ 
   useEffect(() => {
-    const promise = new Promise((resolve, reject) => {
+    fetchData().then(result=> {
+      setTodoList(result.data.todoList);
+      setIsLoading(false)
+    });
+
+    /*const promise = new Promise((resolve, reject) => {
       setTimeout(() => {
         resolve({ data: { todoList:JSON.parse(localStorage.getItem('savedTodoList')) || []} }); 
       }, 2000);
@@ -41,7 +80,7 @@ function App() {
     setTodoList(result.data.todoList);
     setIsLoading(false);
     });
-  }, []);
+  }, []); (Lesson 1.8 replace the contents of the useEffect with a call to fetchData())*/
 
   useEffect(() => {
     if (isLoading === false) {localStorage.setItem('savedTodoList', JSON.stringify(todoList));}
