@@ -1,32 +1,30 @@
-import InputWithLabel from './InputWithLabel';
- 
-import React, { useState } from 'react';
+import InputWithLabel from "./InputWithLabel";
 
+import React, { useState } from "react";
 
-
-export default function AddTodoForm({onAddTodo}) {
-  const [todoTitle, setTodoTitle] = useState('');
-
+export default function AddTodoForm({ onAddTodo }) {
+  const [todoTitle, setTodoTitle] = useState("");
 
   /* This is a multi-line comment in JSX */
-  function handleTitleChange(event) {  /*
+  function handleTitleChange(event) {
+    /*
   changes to the input value will be handled this function,
   which will update the state of todoTitle using setTodoTitle()
 */
-  const newTodoTitle = event.target.value;
-  setTodoTitle(newTodoTitle);
+    const newTodoTitle = event.target.value;
+    setTodoTitle(newTodoTitle);
   }
-  
-  function handleAddTodo (event) {
+
+  function handleAddTodo(event) {
     event.preventDefault();
-    const newTodo ={
-        title: todoTitle,
-        id: Date.now()
+    const newTodo = {
+      title: todoTitle,
+      id: Date.now(),
     };
     onAddTodo(newTodo);
-    setTodoTitle('');
+    setTodoTitle("");
   }
-  
+
   return (
     <form onSubmit={handleAddTodo}>
       <InputWithLabel
@@ -39,4 +37,4 @@ export default function AddTodoForm({onAddTodo}) {
       <button type="submit">Add</button>
     </form>
   );
-  }
+}

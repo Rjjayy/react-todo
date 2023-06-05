@@ -20,13 +20,7 @@ import TodoList from "./TodoList";
 }
 
 function App() {
-  const [todoList, setTodoList] = useSemiPersistentState();
-  The code belloew: has been updated by removing the useSemiPersistentState function and integrating its logic directly into the App component
-*/
-
-function App() {
   const [todoList, setTodoList] = useState([]);
-
   const [isLoading, setIsLoading] = useState(true);
 
   async function fetchData() {
@@ -37,20 +31,17 @@ function App() {
         Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_API_KEY}`,
       },
     };
+
     try {
       const response = await fetch(url, options);
-
       if (response.ok === false) {
-        throw new Error("Error: ${response.status}");
+        throw new Error(`Error: ${response.status}`);
       }
-
       const data = await response.json();
-      console.log(data);
       const todos = data.records.map((record) => ({
         title: record.fields.Title,
         id: record.id,
       }));
-      console.log(todos);
       setTodoList(todos);
       setIsLoading(false);
     } catch (error) {
@@ -98,6 +89,7 @@ function App() {
         <Route path="/new" element={<h1>New Todo Form</h1>} />
       </Routes>
     </BrowserRouter>
+
   );
 }
 
