@@ -8,17 +8,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AddTodoForm from "./AddTodoForm";
 import TodoList from "./TodoList";
 
-/*function useSemiPersistentState() {
-  const [todoList, setTodoList] = useState(JSON.parse(localStorage.getItem('savedTodoList')) || []);
-
-
-  useEffect(() => {
-    localStorage.setItem('savedTodoList', JSON.stringify(todoList));
-  }, [todoList]);
-
-  return [todoList, setTodoList];
-}
-
 function App() {
   const [todoList, setTodoList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -28,8 +17,8 @@ function App() {
     const options = {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_API_KEY}`,
-      },
+        Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_API_KEY}`
+      }
     };
 
     try {
@@ -38,9 +27,9 @@ function App() {
         throw new Error(`Error: ${response.status}`);
       }
       const data = await response.json();
-      const todos = data.records.map((record) => ({
+      const todos = data.records.map(record => ({
         title: record.fields.Title,
-        id: record.id,
+        id: record.id
       }));
       setTodoList(todos);
       setIsLoading(false);
@@ -60,13 +49,11 @@ function App() {
   }, [todoList]);
 
   function addTodo(newTodo) {
-    setTodoList((prevTodoList) => [...prevTodoList, newTodo]);
+    setTodoList(prevTodoList => [...prevTodoList, newTodo]);
   }
 
   function removeTodo(id) {
-    setTodoList((prevTodoList) =>
-      prevTodoList.filter((todo) => todo.id !== id)
-    );
+    setTodoList(prevTodoList => prevTodoList.filter(todo => todo.id !== id));
   }
 
   return (
@@ -89,7 +76,6 @@ function App() {
         <Route path="/new" element={<h1>New Todo Form</h1>} />
       </Routes>
     </BrowserRouter>
-
   );
 }
 
