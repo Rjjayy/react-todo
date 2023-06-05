@@ -4,8 +4,20 @@ The reason is: right now App.js is not storing a variable for localStorage.
 Additionally, once a variable for localStorage is created then we need to update the default useState to use whatever the browser has in localStorage.*/
 
 import React, { useState, useEffect } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AddTodoForm from "./AddTodoForm";
 import TodoList from "./TodoList";
+
+/*function useSemiPersistentState() {
+  const [todoList, setTodoList] = useState(JSON.parse(localStorage.getItem('savedTodoList')) || []);
+
+
+  useEffect(() => {
+    localStorage.setItem('savedTodoList', JSON.stringify(todoList));
+  }, [todoList]);
+
+  return [todoList, setTodoList];
+}
 
 function App() {
   const [todoList, setTodoList] = useState([]);
@@ -27,10 +39,9 @@ function App() {
       }
       const data = await response.json();
       const todos = data.records.map((record) => ({
-        title: record.fields.title,
+        title: record.fields.Title,
         id: record.id,
       }));
-
       setTodoList(todos);
       setIsLoading(false);
     } catch (error) {
@@ -46,7 +57,7 @@ function App() {
     if (isLoading === false) {
       localStorage.setItem("savedTodoList", JSON.stringify(todoList));
     }
-  }, [todoList, isLoading]);
+  }, [todoList]);
 
   function addTodo(newTodo) {
     setTodoList((prevTodoList) => [...prevTodoList, newTodo]);
@@ -59,15 +70,26 @@ function App() {
   }
 
   return (
-    <>
-      <h1>Todo List</h1>
-      <AddTodoForm onAddTodo={addTodo} />
-      {isLoading === true ? (
-        <p>Loading...</p>
-      ) : (
-        <TodoList todoList={todoList} onRemoveTodo={removeTodo} />
-      )}
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <>
+              <h1>Todo List</h1>
+              <AddTodoForm onAddTodo={addTodo} />
+              {isLoading === true ? (
+                <p>Loading...</p>
+              ) : (
+                <TodoList todoList={todoList} onRemoveTodo={removeTodo} />
+              )}
+            </>
+          }
+        />
+        <Route path="/new" element={<h1>New Todo Form</h1>} />
+      </Routes>
+    </BrowserRouter>
+
   );
 }
 
