@@ -1,4 +1,6 @@
-import React from 'react';
+import React from "react";
+import style from "./TodoListItem.module.css";
+
 
 function TodoListItem({ todo, onRemoveTodo }) {
   function handleRemoveTodo() {
@@ -6,7 +8,7 @@ function TodoListItem({ todo, onRemoveTodo }) {
   }
 
   return (
-    <li>
+    <li className={style.ListItem}>
       {todo.title}
       <button type="button" onClick={handleRemoveTodo}>
         Remove

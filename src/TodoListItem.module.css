@@ -1,0 +1,56 @@
+body {
+  background-color: #0c63ab; /* Set the background color of the body */
+  font-family: Arial, sans-serif; /* Specify the font family for the text */
+  display: flex; /* Use flexbox for layout */
+  justify-content: center; /* Center the content horizontally */
+  align-items: flex-start; /* Align the content to the top */
+  min-height: 100vh; /* Set the minimum height of the body to the full viewport height */
+}
+
+.container {
+  text-align: center; /* Center the text within the container */
+  margin-top: 20px; /* Add a top margin of 20 pixels */
+}
+
+/* Customize navigation items */
+.ListItem {
+  color: black; /* Set the text color for the list item */
+}
+
+.navItem {
+  margin-right: 10px; /* Add a right margin of 10 pixels to the navigation item */
+}
+
+h1 {
+  font-size: 30px; /* Set the font size of the heading */
+  font-weight: bold; /* Set the font weight to bold */
+  color: purple; /* Set the text color of the heading */
+  margin-top: 20px; /* Add a top margin of 20 pixels */
+}
+
+.ListItem button {
+  margin: 10px; /* Add a margin of 10 pixels to the button */
+  background-color: #8c00ff; /* Set the background color of the button */
+  color: #ffffff; /* Set the text color of the button */
+  border: none; /* Remove the border of the button */
+  padding: 5px 10px; /* Add padding to the button */
+  cursor: pointer; /* Change the cursor to a pointer on hover */
+}
+
+/* Media queries */
+
+/* Styles for devices with a maximum width of 768px (e.g., mobile devices) */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 24px;
+    margin-top: 10px;
+  }
+}
+
+/* Styles for devices with a minimum width of 769px (e.g., tablets and desktops) */
+@media (min-width: 769px) {
+  h1 {
+    font-size: 36px;
+    margin-top: 30px;
+  }
+}
