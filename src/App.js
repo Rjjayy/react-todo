@@ -5,8 +5,8 @@ Additionally, once a variable for localStorage is created then we need to update
 
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import AddTodoForm from "./AddTodoForm";
-import TodoList from "./TodoList";
+import AddTodoForm from "./components/AddTodoForm";
+import TodoList from "./components/TodoList";
 
 function App() {
   const [todoList, setTodoList] = useState([]);
@@ -17,8 +17,8 @@ function App() {
     const options = {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_API_KEY}`
-      }
+        Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_API_KEY}`,
+      },
     };
 
     try {
@@ -28,8 +28,8 @@ function App() {
       }
       const data = await response.json();
       const todos = data.records.map(record => ({
-        title: record.fields.Title,
-        id: record.id
+        title: record.fields.title,
+        id: record.id,
       }));
       setTodoList(todos);
       setIsLoading(false);
@@ -49,11 +49,13 @@ function App() {
   }, [todoList]);
 
   function addTodo(newTodo) {
-    setTodoList(prevTodoList => [...prevTodoList, newTodo]);
+    setTodoList((prevTodoList) => [...prevTodoList, newTodo]);
   }
 
   function removeTodo(id) {
-    setTodoList(prevTodoList => prevTodoList.filter(todo => todo.id !== id));
+    setTodoList((prevTodoList) =>
+      prevTodoList.filter((todo) => todo.id !== id)
+    );
   }
 
   return (
