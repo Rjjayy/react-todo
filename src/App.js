@@ -27,7 +27,7 @@ function App() {
         throw new Error(`Error: ${response.status}`);
       }
       const data = await response.json();
-      const todos = data.records.map(record => ({
+      const todos = data.records.map((record) => ({
         title: record.fields.title,
         id: record.id,
       }));
@@ -46,7 +46,7 @@ function App() {
     if (isLoading === false) {
       localStorage.setItem("savedTodoList", JSON.stringify(todoList));
     }
-  }, [todoList]);
+  }, [todoList, isLoading]);
 
   function addTodo(newTodo) {
     setTodoList((prevTodoList) => [...prevTodoList, newTodo]);
