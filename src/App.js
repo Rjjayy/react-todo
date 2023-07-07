@@ -27,13 +27,13 @@ function App() {
         throw new Error(`Error: ${response.status}`);
       }
       const data = await response.json();
-       data.records.sort((objectA, objectB) => {
+      data.records.sort((objectA, objectB) => {
         const titleA = objectA.fields.title.toUpperCase();
         const titleB = objectB.fields.title.toUpperCase();
         if (titleA < titleB) {
-          return -1;
-        } else if (titleA > titleB) {
           return 1;
+        } else if (titleA > titleB) {
+          return -1;
         } else {
           return 0;
         }
