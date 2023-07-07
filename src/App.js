@@ -11,48 +11,49 @@ import TodoList from "./components/TodoList";
 function App() {
   const [todoList, setTodoList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
-  async function fetchData() {
-    const url = `https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/${process.env.REACT_APP_TABLE_NAME}?view=Grid%20view&sort[0][field]=title&sort[0][direction]=asc`;
-    const options = {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_API_KEY}`,
-      },
-    };
-
-    try {
-      const response = await fetch(url, options);
-      if (response.ok === false) {
-        throw new Error(`Error: ${response.status}`);
-      }
-      const data = await response.json();
-      data.records.sort((objectA, objectB) => {
-        const titleA = objectA.fields.title.toUpperCase();
-        const titleB = objectB.fields.title.toUpperCase();
-        if (titleA < titleB) {
-          return 1;
-        } else if (titleA > titleB) {
-          return -1;
-        } else {
-          return 0;
-        }
-      });
-
-      const todos = data.records.map((record) => ({
-        title: record.fields.title,
-        id: record.id,
-      }));
-      setTodoList(todos);
-      setIsLoading(false);
-    } catch (error) {
-      console.error("Error while fetching data:", error);
-    }
-  }
+  const [sortOrder, setSortOrder] = useState("asc");
 
   useEffect(() => {
+    async function fetchData() {
+      const url = `https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/${process.env.REACT_APP_TABLE_NAME}?view=Grid%20view&sort[0][field]=title&sort[0][direction]=${sortOrder}`;
+      const options = {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_API_KEY}`,
+        },
+      };
+
+      try {
+        const response = await fetch(url, options);
+        if (response.ok === false) {
+          throw new Error(`Error: ${response.status}`);
+        }
+        const data = await response.json();
+        data.records.sort((objectA, objectB) => {
+          const valueA = objectA.fields.title.toUpperCase();
+          const valueB = objectB.fields.title.toUpperCase();
+          if (valueA < valueB) {
+            return sortOrder === "asc" ? -1 : 1;
+          } else if (valueA > valueB) {
+            return sortOrder === "asc" ? 1 : -1;
+          } else {
+            return 0;
+          }
+        });
+
+        const todos = data.records.map((record) => ({
+          title: record.fields.title,
+          id: record.id,
+        }));
+        setTodoList(todos);
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error while fetching data:", error);
+      }
+    }
+
     fetchData();
-  }, []);
+  }, [sortOrder]);
 
   useEffect(() => {
     if (isLoading === false) {
@@ -70,6 +71,10 @@ function App() {
     );
   }
 
+  function toggleSortOrder() {
+    setSortOrder((prevSortOrder) => (prevSortOrder === "asc" ? "desc" : "asc"));
+  }
+
   return (
     <BrowserRouter>
       <Routes>
@@ -79,6 +84,7 @@ function App() {
             <>
               <h1>Todo List</h1>
               <AddTodoForm onAddTodo={addTodo} />
+              <button onClick={toggleSortOrder}>Toggle Sort Order</button>
               {isLoading === true ? (
                 <p>Loading...</p>
               ) : (
@@ -94,3 +100,5 @@ function App() {
 }
 
 export default App;
+
+
