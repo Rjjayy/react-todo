@@ -63,12 +63,12 @@ function App({ tableName }) {
       }
       const data = await response.json();
 
-      const newtodo = {
+      const newTodo = {
         title: data.fields.title,
         id: data.id,
       };
 
-      const updatedTodoList = [...todoList, newtodo];
+      const updatedTodoList = [...todoList, newTodo];
       setTodoList(updatedTodoList);
       console.log("Updated Todo List:", updatedTodoList); // Log the updated todoList value
     } catch (error) {
