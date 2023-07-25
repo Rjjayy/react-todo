@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import style from "./TodoListItem.module.css";
+import styles from "./TodoListItem.module.css";  
 
 function TodoListItem({ todo, onRemoveTodo }) {
   function handleRemoveTodo() {
@@ -8,7 +8,7 @@ function TodoListItem({ todo, onRemoveTodo }) {
   }
 
   return (
-    <li className={style.ListItem}>
+    <li className={styles.ListItem}> {/* Use styles instead of style */}
       {todo.title}
       <button type="button" onClick={handleRemoveTodo}>
         Remove
@@ -26,5 +26,3 @@ TodoListItem.propTypes = {
 };
 
 export default TodoListItem;
-
-

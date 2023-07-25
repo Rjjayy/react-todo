@@ -19,9 +19,9 @@ export default function AddTodoForm({ onAddTodo }) {
     event.preventDefault();
     const newTodo = {
       title: todoTitle,
-      id: Date.now(),
+      id: Date.now().toString(), 
     };
-    onAddTodo(newTodo);
+    onAddTodo(newTodo.title);
     setTodoTitle("");
   }
 
