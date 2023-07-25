@@ -25,7 +25,7 @@ TodoList.propTypes = {
       title: PropTypes.string.isRequired,
       id: PropTypes.string.isRequired,
     })
-  ).isRequired,
+  ),
   onRemoveTodo: PropTypes.func.isRequired,
 };
 console.log('todoList:', todoList);
