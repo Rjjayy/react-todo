@@ -1,6 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+
+
+
+
 function TodoList({ todoList, onRemoveTodo }) {
   return (
     <ul>
@@ -24,6 +28,7 @@ TodoList.propTypes = {
   ),
   onRemoveTodo: PropTypes.func.isRequired,
 };
+console.log('todoList:', todoList);
 
 
-export default TodoList;
+export default TodoList;'

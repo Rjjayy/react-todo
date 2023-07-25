@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import PropTypes from "prop-types";
-export default function InputWithLabel({ id, value, onChange, children }) {
+export default function InputWithLabel(props) {
   const inputRef = useRef();
 
   useEffect(() => {
@@ -9,8 +9,13 @@ export default function InputWithLabel({ id, value, onChange, children }) {
 
   return (
     <>
-      <label> {children}</label>
-      <input id={id} value={value} onChange={onChange} ref={inputRef} />
+      <label htmlFor={props.id}>{props.children}</label>
+      <input
+        id={props.id}
+        value={props.value}
+        onChange={props.onChange}
+        ref={inputRef}
+      />
     </>
   );
 }
