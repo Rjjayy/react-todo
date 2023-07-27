@@ -1,25 +1,28 @@
 import React from "react";
 import PropTypes from "prop-types";
-import TodoListItem from "./TodoListItem";
+import style from "./TodoListItem.module.css";
 
-export default function TodoList({ todoList, onRemoveTodo }) {
+function TodoListItem({ todo, onRemoveTodo }) {
+  function handleRemoveTodo() {
+    onRemoveTodo(todo.id);
+  }
+
   return (
-    <>
-      <ul>
-        {todoList.map((todo) => (
-          <TodoListItem key={todo.id} todo={todo} onRemoveTodo={onRemoveTodo} />
-        ))}
-      </ul>
-    </>
+    <li className={style.ListItem}>
+      {todo.title}
+      <button type="button" onClick={handleRemoveTodo}>
+        Remove
+      </button>
+    </li>
   );
 }
 
-TodoList.propTypes = {
-  todoList: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      title: PropTypes.string.isRequired,
-    })
-  ).isRequired,
+TodoListItem.propTypes = {
+  todo: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+  }).isRequired,
   onRemoveTodo: PropTypes.func.isRequired,
 };
+
+export default TodoListItem;

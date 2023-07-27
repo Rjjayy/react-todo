@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 
-export default function InputWithLabel ({ todoTitle, handleTitleChange, children }) {
+export default function InputWithLabel({ id, value, onChange, children }) {
   const inputRef = useRef();
 
   useEffect(() => {
@@ -10,10 +10,11 @@ export default function InputWithLabel ({ todoTitle, handleTitleChange, children
 
   return (
     <>
-      <label>{children}</label>     
-       <input
-        value={todoTitle}
-        onChange={handleTitleChange}
+      <label>{children}</label>
+      <input
+        id={id}
+        value={value}
+        onChange={onChange}
         ref={inputRef}
       />
     </>

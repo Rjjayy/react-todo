@@ -6,7 +6,6 @@ function TodoListItem({ todo, onRemoveTodo }) {
   function handleRemoveTodo() {
     onRemoveTodo(todo.id);
   }
-
   return (
     <li className={style.ListItem}>
       {todo.title}
@@ -16,7 +15,6 @@ function TodoListItem({ todo, onRemoveTodo }) {
     </li>
   );
 }
-
 TodoListItem.propTypes = {
   todo: PropTypes.shape({
     id: PropTypes.string.isRequired,
@@ -26,5 +24,3 @@ TodoListItem.propTypes = {
 };
 
 export default TodoListItem;
-
-

@@ -1,8 +1,3 @@
-/*In order to get the todo list to persist after a page refresh we have to assign the 
-default useState to our localStorage. Currently localStorage is holding the state as it updates (adding todo) but the issue is that resetting the browser window wipes out localStorage. 
-The reason is: right now App.js is not storing a variable for localStorage. 
-Additionally, once a variable for localStorage is created then we need to update the default useState to use whatever the browser has in localStorage.*/
-
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import PropTypes from "prop-types";
@@ -51,65 +46,57 @@ function App({ tableName }) {
     }
   }, [todoList, isLoading]);
 
-  async function addTodo(title) {
-    async function postData() {
-      const url = `https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/${tableName}`;
-      const options = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_API_KEY}`,
-        },
-        body: JSON.stringify({ fields: { title: title } }),
+  async function addTodo(newTodo) {
+    const newTitle = newTodo.title;
+    const url = `https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/${tableName}`;
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_API_KEY}`,
+      },
+      body: JSON.stringify({ fields: { title: newTitle } }),
+    };
+
+    try {
+      const response = await fetch(url, options);
+      if (response.ok === false) {
+        throw new Error(`Error: ${response.status}`);
+      }
+      const data = await response.json();
+
+      const newTodo = {
+        title: data.fields.title,
+        id: data.id,
       };
 
-      try {
-        const response = await fetch(url, options);
-        if (response.ok === false) {
-          throw new Error(`Error: ${response.status}`);
-        }
-        const data = await response.json();
-
-        const newtodo = {
-          title: data.fields.title,
-          id: data.id,
-        };
-
-        
-        const updatedTodoList = [...todoList, newtodo];
-        setTodoList(updatedTodoList);
-        console.log("Updated Todo List:", updatedTodoList); // Log the updated todoList value
-      } catch (error) {
-        console.error("Error while adding todo:", error);
-      }
+      const updatedTodoList = [...todoList, newTodo];
+      setTodoList(updatedTodoList);
+      console.log("Updated Todo List:", updatedTodoList); // Log the updated todoList value
+    } catch (error) {
+      console.error("Error while adding todo:", error);
     }
-    postData();
   }
 
-  function removeTodo(id) {
-    async function deleteData() {
-      const url = `https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/${tableName}/${id}`;
-      const options = {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_API_KEY}`,
-        },
-      };
+  async function removeTodo(id) {
+    const url = `https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/${tableName}/${id}`;
+    const options = {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_API_KEY}`,
+      },
+    };
 
-      try {
-        const response = await fetch(url, options);
-        if (response.ok === false) {
-          throw new Error(`Error: ${response.status}`);
-        }
-
-        setTodoList((prevTodoList) =>
-          prevTodoList.filter((todo) => todo.id !== id)
-        );
-      } catch (error) {
-        console.error("Error while removing todo:", error);
+    try {
+      const response = await fetch(url, options);
+      if (response.ok === false) {
+        throw new Error(`Error: ${response.status}`);
       }
+
+      setTodoList((prevTodoList) => prevTodoList.filter((todo) => todo.id !== id));
+    } catch (error) {
+      console.error("Error while removing todo:", error);
     }
-    deleteData();
   }
 
   return (
@@ -121,11 +108,7 @@ function App({ tableName }) {
             <>
               <h1>{tableName}</h1>
               <AddTodoForm onAddTodo={addTodo} />
-              {isLoading === true ? (
-                <p>Loading...</p>
-              ) : (
-                <TodoList todoList={todoList} onRemoveTodo={removeTodo} />
-              )}
+              {isLoading === true ? <p>Loading...</p> : <TodoList todoList={todoList} onRemoveTodo={removeTodo} />}
             </>
           }
         />
@@ -138,6 +121,7 @@ function App({ tableName }) {
 App.propTypes = {
   tableName: PropTypes.string.isRequired,
 };
+
 App.defaultProps = {
   tableName: "Default", // Replace with your default table name if needed
 };
