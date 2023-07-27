@@ -20,7 +20,7 @@ function App({ tableName }) {
 
       try {
         const response = await fetch(url, options);
-        if (response.ok === false) {
+        if (!response.ok) {
           throw new Error(`Error: ${response.status}`);
         }
         const data = await response.json();
@@ -60,17 +60,17 @@ function App({ tableName }) {
 
     try {
       const response = await fetch(url, options);
-      if (response.ok === false) {
+      if (!response.ok) {
         throw new Error(`Error: ${response.status}`);
       }
       const data = await response.json();
 
-      const newTodo = {
+      const newTodoItem = {
         title: data.fields.title,
         id: data.id,
       };
 
-      const updatedTodoList = [...todoList, newTodo];
+      const updatedTodoList = [...todoList, newTodoItem];
       setTodoList(updatedTodoList);
       console.log("Updated Todo List:", updatedTodoList); // Log the updated todoList value
     } catch (error) {
@@ -89,7 +89,7 @@ function App({ tableName }) {
 
     try {
       const response = await fetch(url, options);
-      if (response.ok === false) {
+      if (!response.ok) {
         throw new Error(`Error: ${response.status}`);
       }
 
@@ -106,7 +106,7 @@ function App({ tableName }) {
           path="/"
           element={
             <>
-              <h1>{tableName}</h1>
+              <h1>Todo List</h1>
               <AddTodoForm onAddTodo={addTodo} />
               {isLoading === true ? <p>Loading...</p> : <TodoList todoList={todoList} onRemoveTodo={removeTodo} />}
             </>
@@ -122,8 +122,6 @@ App.propTypes = {
   tableName: PropTypes.string.isRequired,
 };
 
-App.defaultProps = {
-  tableName: "Default", // Replace with your default table name if needed
-};
-
 export default App;
+
+
